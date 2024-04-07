@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "walksy.customkits.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
