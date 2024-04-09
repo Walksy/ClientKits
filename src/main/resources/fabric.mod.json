@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "customkits",
+	"id": "clientkits",
 	"version": "${version}",
-	"name": "Custom Kits",
-	"description": "",
+	"name": "Client Kits",
+	"description": "Allows you to store and reload custom saved kits.",
 	"authors": [
 		"Walksy"
 	],
@@ -15,11 +15,11 @@
 	"environment": "client",
 	"entrypoints": {
 		"main": [
-      "walksy.customkits.main.CustomKitsMod"
+          "walksy.customkits.main.ClientKitsMod"
 		]
 	},
 	"mixins": [
-    "customkits.mixins.json"
+    "clientkits.mixins.json"
 	],
 	"depends": {
 		"fabricloader": "*",

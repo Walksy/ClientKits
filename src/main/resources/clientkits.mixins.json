@@ -3,7 +3,8 @@
 	"package": "walksy.customkits.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-
+    "ClientPlayerEntityMixin",
+    "ChatHudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

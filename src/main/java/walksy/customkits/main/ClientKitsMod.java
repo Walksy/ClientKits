@@ -8,9 +8,10 @@ import walksy.customkits.manager.KitCommandManager;
 
 import java.io.IOException;
 
-public class CustomKitsMod implements ModInitializer {
+public class ClientKitsMod implements ModInitializer {
 
     public static boolean debugger = true;
+
 
     @Override
     public void onInitialize()
@@ -26,6 +27,6 @@ public class CustomKitsMod implements ModInitializer {
     public static void debugMessage(String message)
     {
         if (!debugger) return;
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(message));
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("§5[Client Kits] " + message));
     }
 }

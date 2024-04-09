@@ -2,20 +2,21 @@ package walksy.customkits.manager;
 
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.datafixer.TypeReferences;
 import net.minecraft.nbt.*;
 import net.minecraft.util.Util;
-import walksy.customkits.other.JsonUtil;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ConfigManager {
+    private static final String directory = FabricLoader.getInstance().getConfigDir().toString();
 
     public static void saveKitToFile(String kitName) {
-        File configDir = new File(JsonUtil.configDir, "ClientKits");
+        File configDir = new File(directory, "ClientKits");
         boolean directoryCreated = configDir.mkdirs();
 
         if (!directoryCreated && !configDir.exists()) {
@@ -25,17 +26,21 @@ public class ConfigManager {
 
         try {
             if (KitManager.kits.containsKey(kitName)) {
-                NbtCompound rootTag = new NbtCompound();
-                NbtCompound compoundTag = new NbtCompound();
-                compoundTag.put(kitName, KitManager.kits.get(kitName));
-                rootTag.putInt("DataVersion", SharedConstants.getGameVersion().getSaveVersion().getId());
-                rootTag.put("Kit", compoundTag);
+
+                NbtCompound dataCompound = new NbtCompound();
+                NbtCompound kitCompound = new NbtCompound();
+
+                kitCompound.put(kitName, KitManager.kits.get(kitName));
+
+                dataCompound.putInt("DataVersion", SharedConstants.getGameVersion().getSaveVersion().getId());
+                dataCompound.put("Kit", kitCompound);
 
                 File newFile = new File(configDir, kitName + ".dat");
-                NbtIo.write(rootTag, newFile);
+                NbtIo.write(dataCompound, newFile);
 
                 File backupFile = new File(configDir, kitName + ".dat_old");
                 File currentFile = new File(configDir, kitName + ".dat");
+
                 Util.backupAndReplace(currentFile, newFile, backupFile);
             } else {
                 System.out.println("Kit with name " + kitName + " does not exist.");
@@ -47,7 +52,7 @@ public class ConfigManager {
 
     public static void loadKitsFromFiles() throws IOException {
         KitManager.kits.clear();
-        File configDir = new File(JsonUtil.configDir, "ClientKits");
+        File configDir = new File(directory, "ClientKits");
         if (!configDir.exists()) {
             return;
         }
@@ -82,4 +87,23 @@ public class ConfigManager {
             }
         }
     }
+
+    public static void deleteKit(String kitName) {
+        File configDir = new File(directory, "ClientKits");
+        if (!configDir.exists()) {
+            return;
+        }
+
+        File kitFile = new File(configDir, kitName + ".dat");
+        if (kitFile.exists()) {
+            if (kitFile.delete()) {
+                System.out.println("Kit " + kitName + " deleted successfully.");
+            } else {
+                System.out.println("Failed to delete kit " + kitName + ".");
+            }
+        } else {
+            System.out.println("Kit " + kitName + " does not exist.");
+        }
+    }
+
 }
