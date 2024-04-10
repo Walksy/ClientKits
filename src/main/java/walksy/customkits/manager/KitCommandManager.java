@@ -1,19 +1,27 @@
 package walksy.customkits.manager;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
 import walksy.customkits.main.ClientKitsMod;
 
@@ -59,6 +67,15 @@ public class KitCommandManager {
                         })
                     )
                 )
+                .then(ClientCommandManager.literal("preview")
+                    .then(ClientCommandManager.argument("name", StringArgumentType.word())
+                        .suggests((context, builder) -> CommandSource.suggestMatching(KitManager.kits.keySet(), builder))
+                        .executes(context -> {
+                            handlePreviewCommand(StringArgumentType.getString(context, "name"));
+                            return 1;
+                        })
+                    )
+                )
             )
         );
     }
@@ -77,6 +94,17 @@ public class KitCommandManager {
             ConfigManager.deleteKit(name);
         } else {
             ClientKitsMod.debugMessage("§cCannot find the kit '" + name + "' to delete.");
+        }
+    }
+
+    void handlePreviewCommand(String name)
+    {
+        if (KitManager.kits.get(name) != null) {
+            PlayerInventory tempInv = new PlayerInventory(MinecraftClient.getInstance().player);
+            tempInv.readNbt(KitManager.kits.get(name));
+            MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new PreviewScreen(new PlayerScreenHandler(tempInv, true, MinecraftClient.getInstance().player), tempInv, name)));
+        } else {
+            ClientKitsMod.debugMessage("§cCannot find the kit '" + name + "' to preview.");
         }
     }
     public static void tick() {
@@ -145,6 +173,44 @@ public class KitCommandManager {
         tempSource = null;
         oldGM = null;
         i = 3;
+    }
+
+
+    class PreviewScreen extends AbstractInventoryScreen<PlayerScreenHandler> {
+
+        public PreviewScreen(PlayerScreenHandler playerScreenHandler, PlayerInventory inventory, String name) {
+            super(playerScreenHandler, inventory, Text.literal(name).styled(style -> style.withColor(Formatting.BOLD)));
+            this.passEvents = true;
+            this.titleX = 80;
+        }
+
+        @Override
+        protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+            this.textRenderer.draw(matrices, this.title, (float) this.titleX, (float) this.titleY, 0x404040);
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            this.renderBackground(matrices);
+            super.render(matrices, mouseX, mouseY, delta);
+            this.drawMouseoverTooltip(matrices, mouseX, mouseY);
+        }
+
+        @Override
+        protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+            int i = this.x;
+            int j = this.y;
+            this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+            InventoryScreen.drawEntity(matrices, i + 51, j + 75, 30, (float)(i + 51) - mouseX, (float)(j + 75 - 50) - mouseY, this.client.player);
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            return false;
+        }
     }
 }
 
