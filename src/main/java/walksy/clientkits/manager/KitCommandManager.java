@@ -188,7 +188,7 @@ public class KitCommandManager {
 
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            this.renderBackground(context);
+            this.renderBackground(context, mouseX, mouseY, delta);
             super.render(context, mouseX, mouseY, delta);
             this.drawMouseoverTooltip(context, mouseX, mouseY);
         }
@@ -198,7 +198,7 @@ public class KitCommandManager {
             int i = this.x;
             int j = this.y;
             context.drawTexture(BACKGROUND_TEXTURE, this.x, this.y, 0, 0, this.backgroundWidth, this.backgroundHeight);
-            InventoryScreen.drawEntity(context, i + 51, j + 75, 30, (float)(i + 51) - mouseX, (float)(j + 75 - 50) - mouseY, this.client.player);
+            InventoryScreen.drawEntity(context, i + 26, j + 8, i + 75, j + 78, 30, 0.0625F, mouseX, mouseY, this.client.player);
         }
 
         @Override

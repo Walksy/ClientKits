@@ -36,12 +36,12 @@ public class ConfigManager {
                 dataCompound.put("Kit", kitCompound);
 
                 File newFile = new File(configDir, kitName + ".dat");
-                NbtIo.write(dataCompound, newFile);
+                NbtIo.write(dataCompound, newFile.toPath());
 
                 File backupFile = new File(configDir, kitName + ".dat_old");
                 File currentFile = new File(configDir, kitName + ".dat");
 
-                Util.backupAndReplace(currentFile, newFile, backupFile);
+                Util.backupAndReplace(currentFile.toPath(), newFile.toPath(), backupFile.toPath());
             } else {
                 System.out.println("Kit with name " + kitName + " does not exist.");
             }
@@ -62,31 +62,23 @@ public class ConfigManager {
 
         for (File file : configDir.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".dat")) {
-                NbtCompound rootTag = NbtIo.read(file);
+                NbtCompound rootTag = NbtIo.read(file.toPath());
                 if (rootTag == null) {
                     continue;
                 }
                 final int fileVersion = rootTag.getInt("DataVersion");
-                NbtCompound compoundTag = rootTag.getCompound("Kit");
+                if (fileVersion < currentVersion) {
+                    rootTag = (NbtCompound) dataFixer.update(TypeReferences.STRUCTURE, new Dynamic<>(NbtOps.INSTANCE, rootTag), fileVersion, currentVersion).getValue();
+                }
 
+                NbtCompound compoundTag = rootTag.getCompound("Kit");
                 for (String key : compoundTag.getKeys()) {
-                    if (fileVersion >= currentVersion) {
-                        KitManager.kits.put(key, compoundTag.getList(key, NbtElement.COMPOUND_TYPE));
-                    } else {
-                        NbtCompound kitData = compoundTag.getCompound(key);
-                        NbtList updatedListTag = new NbtList();
-                        kitData.getKeys().forEach(entryKey -> {
-                            NbtElement tag = kitData.get(entryKey);
-                            Dynamic<NbtElement> oldTagDynamic = new Dynamic<>(NbtOps.INSTANCE, tag);
-                            Dynamic<NbtElement> newTagDynamic = dataFixer.update(TypeReferences.ITEM_STACK, oldTagDynamic, fileVersion, currentVersion);
-                            updatedListTag.add(newTagDynamic.getValue());
-                        });
-                        KitManager.kits.put(key, updatedListTag);
-                    }
+                    KitManager.kits.put(key, compoundTag.getList(key, NbtElement.COMPOUND_TYPE));
                 }
             }
         }
     }
+
 
     public static void loadKitsFromFile()
     {
