@@ -14,7 +14,6 @@ public class ChatScreenMixin {
     @Inject(method = "init()V", at = @At("HEAD"))
     public void init(CallbackInfo ci)
     {
-        ClientKitsMod.debugMessage("Opened Chat Screen");
         ConfigManager.loadKitsFromFile();
     }
 }
