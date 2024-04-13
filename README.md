@@ -5,21 +5,21 @@ This mod allows you to save kits from your inventory and transfer them across to
 
 ### How To Use:
 After correctly installing the mod, you will now have access to the following commands in-game:
-- **/ck Save [Name]:**
-
+- **/ck save [Name]:**
+  
   This will save your current inventory to file, with the chosen name.
 
-- **/ck Load [Name]:**
-
+- **/ck load [Name]:**
+  
   This load the selected kit.
 
-- **/ck Delete [Name]:**
-
+- **/ck delete [Name]:**
+  
   This will delete the chosen kit.
 
-- **/ck Preview [Name]:**
-
-  This will open a fake inventory for you to preview and see the saved inventory, with the chosen name.
+- **/ck preview [Name]:**
+  
+  This will open a fake inventory for you to preview and see the saved kit.
 
 
 ### Important Info:
@@ -29,4 +29,5 @@ After correctly installing the mod, you will now have access to the following co
 
 - After deletion, a kit is permanently removed. However you can always create backups to ensure you never lose your kits!
 
-
+### Known Bugs (ALL FIXED):
+- ~~When saving a kit on a different version, attempting to load it on a version that is either lower or higher will result in the kit not loading.~~
