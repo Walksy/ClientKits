@@ -7,8 +7,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.PlayerListEntry;
@@ -180,31 +179,28 @@ public class KitCommandManager {
 
         public PreviewScreen(PlayerScreenHandler playerScreenHandler, PlayerInventory inventory, String name) {
             super(playerScreenHandler, inventory, Text.literal(name).styled(style -> style.withColor(Formatting.BOLD)));
-            this.passEvents = true;
             this.titleX = 80;
         }
 
         @Override
-        protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-            this.textRenderer.draw(matrices, this.title, (float) this.titleX, (float) this.titleY, 0x404040);
+        protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+            context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 0x404040, false);
         }
 
         @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            this.renderBackground(matrices);
-            super.render(matrices, mouseX, mouseY, delta);
-            this.drawMouseoverTooltip(matrices, mouseX, mouseY);
+        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            this.renderBackground(context);
+            super.render(context, mouseX, mouseY, delta);
+            this.drawMouseoverTooltip(context, mouseX, mouseY);
         }
 
         @Override
-        protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+        protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
             int i = this.x;
             int j = this.y;
-            this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-            InventoryScreen.drawEntity(matrices, i + 51, j + 75, 30, (float)(i + 51) - mouseX, (float)(j + 75 - 50) - mouseY, this.client.player);
+            context.drawTexture(BACKGROUND_TEXTURE, this.x, this.y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+            InventoryScreen.drawEntity(context, i + 51, j + 75, 30, (float)(i + 51) - mouseX, (float)(j + 75 - 50) - mouseY, this.client.player);
+
         }
 
         @Override
