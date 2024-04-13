@@ -1,4 +1,4 @@
-package walksy.customkits.manager;
+package walksy.clientkits.manager;
 
 import net.minecraft.nbt.NbtList;
 

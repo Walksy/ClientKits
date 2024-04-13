@@ -1,4 +1,4 @@
-package walksy.customkits.manager;
+package walksy.clientkits.manager;
 
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ConfigManager {
-    private static final String directory = FabricLoader.getInstance().getConfigDir().toString();
+    public static final String directory = FabricLoader.getInstance().getConfigDir().toString();
 
     public static void saveKitToFile(String kitName) {
         File configDir = new File(directory, "ClientKits");
@@ -50,7 +50,7 @@ public class ConfigManager {
         }
     }
 
-    public static void loadKitsFromFiles() throws IOException {
+    private static void loadKits() throws IOException {
         KitManager.kits.clear();
         File configDir = new File(directory, "ClientKits");
         if (!configDir.exists()) {
@@ -85,6 +85,15 @@ public class ConfigManager {
                     }
                 }
             }
+        }
+    }
+
+    public static void loadKitsFromFile()
+    {
+        try {
+            loadKits();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

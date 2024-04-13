@@ -3,24 +3,27 @@
 	"id": "clientkits",
 	"version": "${version}",
 	"name": "Client Kits",
-	"description": "Allows you to store and reload custom saved kits.",
+	"description": "Allows you to store and load your custom kits!",
 	"authors": [
 		"Walksy"
 	],
 	"contact": {
-
+    "homepage": "https://discord.gg/zeu7uNuBWY",
+    "issues": "https://github.com/Walksy/ClientKits/issues",
+    "sources": "https://github.com/Walksy/ClientKits"
 	},
 	"license": "MIT",
 	"icon": "assets/walksy/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [
-          "walksy.customkits.main.ClientKitsMod"
+      "walksy.clientkits.main.ClientKitsMod"
 		]
 	},
 	"mixins": [
     "clientkits.mixins.json"
 	],
+
 	"depends": {
 		"fabricloader": "*",
 		"minecraft": "*",

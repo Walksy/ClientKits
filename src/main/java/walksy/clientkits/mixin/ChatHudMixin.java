@@ -1,12 +1,15 @@
-package walksy.customkits.mixin;
+package walksy.clientkits.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import walksy.customkits.manager.KitCommandManager;
+import walksy.clientkits.main.ClientKitsMod;
+import walksy.clientkits.manager.ConfigManager;
+import walksy.clientkits.manager.KitCommandManager;
 
 @Mixin(ChatHud.class)
 public class ChatHudMixin {
