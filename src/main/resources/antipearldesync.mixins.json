@@ -1,11 +1,10 @@
 {
 	"required": true,
-	"package": "walksy.clientkits.mixin",
+	"package": "walksy.antipearldesync.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-    "ClientPlayerEntityMixin",
-    "ChatHudMixin",
-    "ChatScreenMixin"
+    "LivingEntityMixin",
+    "WorldRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
