@@ -1,25 +1,27 @@
 {
 	"schemaVersion": 1,
-	"id": "antipearldesync",
+	"id": "clientkits",
 	"version": "${version}",
-	"name": "Anti Pearl Desync",
-	"description": "",
+	"name": "Client Kits",
+	"description": "Allows you to store and load your custom kits!",
 	"authors": [
 		"Walksy"
 	],
 	"contact": {
-
+    "homepage": "https://discord.gg/zeu7uNuBWY",
+    "issues": "https://github.com/Walksy/ClientKits/issues",
+    "sources": "https://github.com/Walksy/ClientKits"
 	},
 	"license": "MIT",
-	"icon": "assets/antipearldesync/icon.png",
+	"icon": "assets/walksy/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [
-      "walksy.antipearldesync.main.AntiPearlDesync"
+      "walksy.clientkits.main.ClientKitsMod"
 		]
 	},
 	"mixins": [
-    "antipearldesync.mixins.json"
+    "clientkits.mixins.json"
 	],
 
 	"depends": {
