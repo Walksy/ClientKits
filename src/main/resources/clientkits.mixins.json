@@ -1,13 +1,10 @@
 {
-	"required": true,
-	"package": "walksy.clientkits.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-    "ClientPlayerEntityMixin",
-    "ChatHudMixin",
-    "ChatScreenMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "walksy.clientkits.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

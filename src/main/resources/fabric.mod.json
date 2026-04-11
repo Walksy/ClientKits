@@ -3,9 +3,9 @@
 	"id": "clientkits",
 	"version": "${version}",
 	"name": "Client Kits",
-	"description": "Allows you to store and load your custom kits!",
+	"description": "Store and load custom kits",
 	"authors": [
-		"Walksy"
+    "Walksy"
 	],
 	"contact": {
     "homepage": "https://discord.gg/zeu7uNuBWY",
@@ -17,17 +17,20 @@
 	"environment": "client",
 	"entrypoints": {
 		"main": [
-      "walksy.clientkits.main.ClientKitsMod"
-		]
+      "walksy.clientkits.ClientKits"
+		],
+    "walksylib": [
+      "walksy.clientkits.config.WalksyLibIntegration"
+    ]
 	},
 	"mixins": [
-    "clientkits.mixins.json"
+      "clientkits.mixins.json"
 	],
-
 	"depends": {
 		"fabricloader": "*",
 		"minecraft": "*",
 		"java": ">=17",
-		"fabric-api": "*"
-	}
+		"fabric-api": "*",
+    "walksylib": ">=0.9.95"
+  }
 }
