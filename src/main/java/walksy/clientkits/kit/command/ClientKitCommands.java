@@ -93,7 +93,7 @@ public class ClientKitCommands {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        mc.execute(() -> mc.setScreen(new KitPreviewScreen(mc.player, kitInventory, name)));
+        mc.execute(() -> mc.gui.setScreen(new KitPreviewScreen(mc.player, kitInventory, name)));
         return Command.SINGLE_SUCCESS;
     }
 
