@@ -1,0 +1,4 @@
+import net\.minecraft\.world\.inventory\.ContainerInput; => import net.minecraft.world.inventory.ClickType;
+\bContainerInput\b => ClickType
+handleContainerInput\( => handleInventoryMouseClick(
+\bGuiGraphicsExtractor\b => GuiGraphics

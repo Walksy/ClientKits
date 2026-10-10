@@ -1,5 +1,6 @@
 package walksy.clientkits.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
@@ -9,15 +10,19 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import main.walksy.lib.api.config.value.ItemInventory;
+import walksy.clientkits.manager.PreviewInventory;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
-import org.lwjgl.glfw.GLFW;
 
 public class KitPreviewScreen extends AbstractRecipeBookScreen<InventoryMenu> {
 
-    public KitPreviewScreen(Player player, Inventory inventory, String kitName) {
+    private final ItemInventory kit;
+
+    public KitPreviewScreen(Player player, Inventory inventory, String kitName, ItemInventory kit) {
         super(new InventoryMenu(inventory, false, player), new CraftingRecipeBookComponent(player.inventoryMenu), inventory, Component.literal(kitName));
+        this.kit = kit;
     }
 
     @Override
@@ -31,7 +36,7 @@ public class KitPreviewScreen extends AbstractRecipeBookScreen<InventoryMenu> {
         int xo = this.leftPos;
         int yo = this.topPos;
         graphics.blit(RenderPipelines.GUI_TEXTURED, INVENTORY_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
-        InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, xo + 26, yo + 8, xo + 75, yo + 78, 30, 0.0625F, mouseX, mouseY, this.minecraft.player);
+        InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, xo + 26, yo + 8, xo + 75, yo + 78, 30, 0.0625F, mouseX, mouseY, PreviewInventory.model(this.minecraft.player, this.kit));
     }
 
     @Override
@@ -61,7 +66,7 @@ public class KitPreviewScreen extends AbstractRecipeBookScreen<InventoryMenu> {
 
     @Override
     public boolean keyPressed(KeyEvent input) {
-        if (input.key() == GLFW.GLFW_KEY_ESCAPE || this.minecraft.options.keyInventory.matches(input)) {
+        if (input.key() == InputConstants.KEY_ESCAPE || this.minecraft.options.keyInventory.matches(input)) {
             return super.keyPressed(input);
         }
 

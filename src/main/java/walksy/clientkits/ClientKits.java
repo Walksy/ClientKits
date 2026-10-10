@@ -1,31 +1,20 @@
 package walksy.clientkits;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import walksy.clientkits.kit.KitIO;
+import main.walksy.lib.api.event.WalksyLibEvents;
+import net.fabricmc.api.ClientModInitializer;
+import walksy.clientkits.kit.LegacyKits;
 import walksy.clientkits.kit.command.ClientKitCommands;
 import walksy.clientkits.manager.KitManager;
 
-import java.io.IOException;
-
-public class ClientKits implements ModInitializer {
+public final class ClientKits implements ClientModInitializer {
 
 
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         ClientKitCommands.create();
-
-        try {
-            KitIO.init();
-        } catch (IOException e) {
-            System.err.println("[ClientKits] Failed to initialize directories!");
-            e.printStackTrace();
-        }
-
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.player != null && client.gameMode != null) {
-                KitManager.tick();
-            }
+        WalksyLibEvents.CLIENT_READY.register(minecraft -> LegacyKits.migrate());
+        WalksyLibEvents.END_LOCAL_PLAYER_TICK.register(localPlayer -> {
+            KitManager.tick();
         });
     }
 }

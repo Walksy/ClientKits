@@ -1,0 +1,2 @@
+import net\.minecraft\.client\.input\.(MouseButtonEvent|MouseButtonInfo|KeyEvent|CharacterEvent|InputWithModifiers); => import main.walksy.lib.core.platform.input.$1;
+\.getWindow\(\)\.handle\(\) => .getWindow().getWindow()

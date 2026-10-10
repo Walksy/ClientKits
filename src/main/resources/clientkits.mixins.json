@@ -1,9 +1,9 @@
 {
   "required": true,
   "package": "walksy.clientkits.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_${java_version}",
   "client": [
-
+    "AbstractContainerScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
